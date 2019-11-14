@@ -4,6 +4,8 @@ metadata:
   name: {{ include "kubernetes-config-example.fullname" . }}
   labels:
 {{ include "kubernetes-config-example.labels" . | indent 4 }}
+  annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
