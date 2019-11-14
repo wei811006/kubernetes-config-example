@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: {{ include "kubernetes-config-example.fullname" . }}-git-repository
+  labels:
+{{ include "kubernetes-config-example.labels" . | indent 4 }}
+spec:
+    type: git
+    params:
+        - name: url
+          value: {{ .Values.git.repository.url | quote }}

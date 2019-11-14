@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+    name: {{ include "kubernetes-config-example.fullname" . }}-image
+    labels:
+{{ include "kubernetes-config-example.labels" . | indent 4 }}
+spec:
+    type: image
+    params:
+        - name: url
+          value: {{ include "kubernetes-config-example.fullname" . }}

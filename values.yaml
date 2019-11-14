@@ -7,6 +7,10 @@ replicaCount: 1
 # Spring Profile
 profile: "dev"
 
+git:
+  repository:
+    url: "https://gitlab.tradevan.com.tw/wei/spring/kubernetes-config-example.git"
+
 image:
   repository: vloude0605/kubernetes-config-example
   tag: latest
