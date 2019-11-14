@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kubernetes-config-example.fullname" . }}
+  labels:
+{{ include "kubernetes-config-example.labels" . | indent 4 }}
+data:
+  {{- (.Files.Glob "src/main/resources/application.yaml").AsConfig | nindent 2 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kubernetes-config-example.fullname" . }}-{{.Values.profile}}
+  labels:
+{{ include "kubernetes-config-example.labels" . | indent 4 }}
+data:
+  {{- (.Files.Glob (printf "%s-%s.yaml" "src/main/resources/application" .Values.profile)).AsConfig | nindent 2 }}

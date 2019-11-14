@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("")
 public class MainController {
 
+    @Value("${message}")
+    private String message;
+
     @Value("${env}")
     private String env;
 
-    @GetMapping("/env")
-    public ResponseEntity env() {
-        return ResponseEntity.ok(env);
+    @GetMapping("/")
+    public ResponseEntity message() {
+        return ResponseEntity.ok(message + " " + env);
     }
 
 }
