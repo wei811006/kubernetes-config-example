@@ -1,0 +1,25 @@
+{{- if .Values.tekton.enabled }}
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: {{ include "kubernetes-config-example.fullname" . }}
+  generateName: {{ include "kubernetes-config-example.fullname" . }}-
+  labels:
+{{ include "kubernetes-config-example.labels" . | indent 4 }}
+spec:
+  pipelineRef:
+    name: spring-pipeline
+  serviceAccount: build-bot
+  resources:
+    - name: git-repo
+      resourceRef:
+        name: {{ include "kubernetes-config-example.fullname" . }}-git-repository
+    - name: image
+      resourceRef:
+        name: {{ include "kubernetes-config-example.fullname" . }}-image
+  params:
+    - name: profile
+      value: {{ .Values.profile }}
+    - name: imageUrl
+      value: {{ include "kubernetes-config-example.fullname" . }}-image
+{{- end}}

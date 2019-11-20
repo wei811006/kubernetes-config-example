@@ -1,3 +1,4 @@
+{{- if .Values.tekton.enabled }}
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
@@ -9,3 +10,4 @@ spec:
     params:
         - name: url
           value: {{ include "kubernetes-config-example.fullname" . }}
+{{- end}}
