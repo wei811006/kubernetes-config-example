@@ -1,10 +1,13 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:8-jdk-alpine AS builder
+WORKDIR target/dependency
+ARG APPJAR=target/*.jar
+COPY ${APPJAR} app.jar
+RUN jar -xf ./app.jar
 
+FROM openjdk:8-jre-alpine
 VOLUME /tmp
 ARG DEPENDENCY=target/dependency
-ARG PROFILE=${ENVIRONMENT}
-COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY ${DEPENDENCY}/META-INF /app/META-INF
-COPY ${DEPENDENCY}/BOOT-INF/classes /app
-
+COPY --from=builder ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=builder ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=builder ${DEPENDENCY}/BOOT-INF/classes /app
 ENTRYPOINT ["java","-cp","app:app/lib/*","wei.springframework.cloud.config.KubernetesConfigExampleApplication"]
